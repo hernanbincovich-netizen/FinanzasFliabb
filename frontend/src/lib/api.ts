@@ -206,6 +206,33 @@ class ApiClient {
   async deletePresupuesto(id: number) {
     return this.request<any>('DELETE', `/presupuestos/${id}`);
   }
+
+  // Metas endpoints
+  async getMetas() {
+    return this.request<{ data: any[] }>('GET', '/metas');
+  }
+
+  async getMeta(id: number) {
+    return this.request<{ meta: any }>('GET', `/metas/${id}`);
+  }
+
+  async createMeta(data: {
+    nombre: string;
+    descripcion?: string;
+    monto_objetivo: number;
+    fecha_objetivo?: string;
+    monto_actual?: number;
+  }) {
+    return this.request<{ meta: any }>('POST', '/metas', data);
+  }
+
+  async updateMeta(id: number, data: Partial<any>) {
+    return this.request<{ meta: any }>('PATCH', `/metas/${id}`, data);
+  }
+
+  async deleteMeta(id: number) {
+    return this.request<any>('DELETE', `/metas/${id}`);
+  }
 }
 
 export const apiClient = new ApiClient();
