@@ -4,6 +4,7 @@ import { useDataStore } from '../stores/dataStore'
 import { apiClient } from '../lib/api'
 import KPICard from '../components/KPICard'
 import MovimientosTable from '../components/MovimientosTable'
+import MovimientoModal, { MovimientoFormData } from '../components/MovimientoModal'
 import './MesCursoPage.css'
 
 export default function MesCursoPage() {
@@ -12,12 +13,119 @@ export default function MesCursoPage() {
     useDataStore()
 
   const [cerrando, setCerrando] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | undefined>(undefined)
 
-  // Cargar períodos al montar
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalLoading, setModalLoading] = useState(false)
+  const [modalError, setModalError] = useState<string | undefined>(undefined)
+  const [editingMovimientoId, setEditingMovimientoId] = useState<number | null>(null)
+  const [conceptos, setConceptos] = useState<any[]>([])
+
+  // Cargar períodos y conceptos al montar
   useEffect(() => {
     fetchPeriodos()
+    loadConceptos()
   }, [fetchPeriodos])
+
+  // Cargar conceptos
+  const loadConceptos = async () => {
+    try {
+      const response = (await apiClient.getConceptos()) as any
+      setConceptos(response?.data || [])
+    } catch (err) {
+      console.error('Error loading conceptos:', err)
+    }
+  }
+
+  // Abrir modal para crear
+  const openCreateModal = () => {
+    setEditingMovimientoId(null)
+    setModalError(undefined)
+    setModalOpen(true)
+  }
+
+  // Abrir modal para editar
+  const openEditModal = (movimientoId: number) => {
+    setEditingMovimientoId(movimientoId)
+    setModalError(undefined)
+    setModalOpen(true)
+  }
+
+  // Cerrar modal
+  const closeModal = () => {
+    setModalOpen(false)
+    setEditingMovimientoId(null)
+    setModalError(undefined)
+  }
+
+  // Guardar movimiento (crear o editar)
+  const handleSaveMovimiento = async (data: MovimientoFormData) => {
+    if (!periodoActual) return
+
+    try {
+      setModalLoading(true)
+      setModalError(undefined)
+
+      if (editingMovimientoId) {
+        // Editar
+        await apiClient.updateMovimiento(editingMovimientoId, data)
+      } else {
+        // Crear
+        await apiClient.createMovimiento(periodoActual.id, data)
+      }
+
+      // Recargar movimientos
+      await periodoActual && (await apiClient.getMovimientos(periodoActual.id))
+      setPeriodoActual(periodoActual)
+
+      closeModal()
+    } catch (err) {
+      setModalError(err instanceof Error ? err.message : 'Error guardando movimiento')
+    } finally {
+      setModalLoading(false)
+    }
+  }
+
+  // Toggle estado movimiento (optimistic update)
+  const handleToggleEstado = async (movimientoId: number) => {
+    if (!periodoActual || periodoActual.estado === 'cerrado') return
+
+    try {
+      // Optimistic update
+      const movimiento = movimientos.find((m) => m.id === movimientoId)
+      if (movimiento) {
+        movimiento.estado = movimiento.estado === 'pendiente' ? 'pagado' : 'pendiente'
+      }
+
+      // Realizar cambio
+      await apiClient.toggleEstadoMovimiento(movimientoId)
+
+      // Recargar para sincronizar
+      setPeriodoActual(periodoActual)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error cambiando estado')
+      // Recargar para revertir optimistic update
+      setPeriodoActual(periodoActual)
+    }
+  }
+
+  // Borrar movimiento
+  const handleDeleteMovimiento = async (movimientoId: number) => {
+    if (!periodoActual || periodoActual.estado === 'cerrado') return
+
+    if (!window.confirm('¿Eliminar este movimiento?')) {
+      return
+    }
+
+    try {
+      await apiClient.deleteMovimiento(movimientoId)
+      // Recargar
+      setPeriodoActual(periodoActual)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error eliminando movimiento')
+    }
+  }
 
   // Navegar a período anterior
   const goToPreviousMes = () => {
@@ -65,7 +173,7 @@ export default function MesCursoPage() {
 
     try {
       setCerrando(true)
-      setError(null)
+      setError(undefined)
       await apiClient.cerrarPeriodo(periodoActual.id)
       // Recargar datos
       await fetchPeriodos()
@@ -86,7 +194,7 @@ export default function MesCursoPage() {
 
     try {
       setCerrando(true)
-      setError(null)
+      setError(undefined)
       await apiClient.reabrirPeriodo(periodoActual.id)
       // Recargar datos
       await fetchPeriodos()
@@ -193,11 +301,21 @@ export default function MesCursoPage() {
 
         {/* Tabla de movimientos */}
         <div className="movimientos-section">
-          <h2>Movimientos</h2>
+          <div className="movimientos-header">
+            <h2>Movimientos</h2>
+            {periodoActual.estado === 'abierto' && (
+              <button onClick={openCreateModal} className="btn btn-sm btn-primary">
+                + Nuevo Movimiento
+              </button>
+            )}
+          </div>
           <MovimientosTable
             movimientos={movimientos}
             loading={movimientosLoading}
             readonly={periodoActual.estado === 'cerrado'}
+            onToggleEstado={handleToggleEstado}
+            onEdit={openEditModal}
+            onDelete={handleDeleteMovimiento}
           />
         </div>
 
@@ -219,6 +337,17 @@ export default function MesCursoPage() {
           Estado: <strong>{periodoActual.estado === 'cerrado' ? 'Cerrado ✓' : 'Abierto'}</strong>
         </div>
       </div>
+
+      {/* Modal de crear/editar movimiento */}
+      <MovimientoModal
+        isOpen={modalOpen}
+        isLoading={modalLoading}
+        error={modalError}
+        conceptos={conceptos}
+        onSubmit={handleSaveMovimiento}
+        onClose={closeModal}
+        title={editingMovimientoId ? 'Editar Movimiento' : 'Nuevo Movimiento'}
+      />
     </div>
   )
 }
