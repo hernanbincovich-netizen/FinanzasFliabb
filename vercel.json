@@ -1,7 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "npm run build --prefix backend",
+  "buildCommand": "cd backend && npm run build",
   "outputDirectory": "backend/dist",
+  "installCommand": "cd backend && npm install",
   "rewrites": [
     {
       "source": "/api/(.*)",
