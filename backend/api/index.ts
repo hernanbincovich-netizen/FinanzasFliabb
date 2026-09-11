@@ -1,8 +1,12 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { verifyAuth } from '../middleware/auth.js';
 import { errorHandler } from '../middleware/errors.js';
+import authRouter from './routes/auth.js';
+import periodosRouter from './routes/periodos.js';
+import movimientosRouter from './routes/movimientos.js';
+import conceptosRouter from './routes/conceptos.js';
 
 dotenv.config();
 
@@ -18,50 +22,15 @@ app.get('/api/health', (_req: Request, res: Response) => {
 });
 
 // Auth routes (sin protección)
-app.post('/api/auth/register', async (_req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.json({ message: 'Register endpoint not implemented yet' });
-  } catch (err) {
-    next(err);
-  }
-});
-
-app.post('/api/auth/login', async (_req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.json({ message: 'Login endpoint not implemented yet' });
-  } catch (err) {
-    next(err);
-  }
-});
+app.use('/api/auth', authRouter);
 
 // Protected routes (requieren JWT)
 app.use('/api', verifyAuth);
 
-// Periodos routes (stub)
-app.get('/api/periodos', async (_req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.json({ message: 'GET periodos not implemented yet', data: [] });
-  } catch (err) {
-    next(err);
-  }
-});
-
-app.post('/api/periodos', async (_req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.status(201).json({ message: 'POST periodos not implemented yet' });
-  } catch (err) {
-    next(err);
-  }
-});
-
-// Movimientos routes (stub)
-app.get('/api/periodos/:periodoId/movimientos', async (_req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.json({ message: 'GET movimientos not implemented yet', data: [] });
-  } catch (err) {
-    next(err);
-  }
-});
+// Routers protegidos
+app.use('/api/periodos', periodosRouter);
+app.use('/api/movimientos', movimientosRouter);
+app.use('/api/conceptos', conceptosRouter);
 
 // 404
 app.use((_req: Request, res: Response) => {
