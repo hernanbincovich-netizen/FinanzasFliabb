@@ -25,7 +25,7 @@ interface FormData {
 export default function PresupuestosPage() {
   const navigate = useNavigate()
   const { user, logout } = useAuthStore()
-  const { periodoActual, periodos } = useDataStore()
+  const { periodoActual } = useDataStore()
 
   const [presupuestos, setPresupuestos] = useState<Presupuesto[]>([])
   const [conceptos, setConceptos] = useState<any[]>([])
