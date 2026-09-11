@@ -22,25 +22,27 @@ export async function verifyAuth(
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): Promise<void> {
   try {
     const token = req.headers.authorization?.replace('Bearer ', '');
 
     if (!token) {
-      return res.status(401).json({
+      res.status(401).json({
         error: 'unauthorized',
         message: 'Token requerido'
       });
+      return;
     }
 
     // Verificar token con Supabase
     const { data, error } = await supabase.auth.getUser(token);
 
     if (error || !data.user) {
-      return res.status(401).json({
+      res.status(401).json({
         error: 'invalid_token',
         message: 'Token inválido o expirado'
       });
+      return;
     }
 
     // Agregar usuario al request

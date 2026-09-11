@@ -13,12 +13,12 @@ app.use(cors());
 app.use(express.json());
 
 // Health check
-app.get('/api/health', (req: Request, res: Response) => {
+app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 // Auth routes (sin protección)
-app.post('/api/auth/register', async (req: Request, res: Response, next: NextFunction) => {
+app.post('/api/auth/register', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     res.json({ message: 'Register endpoint not implemented yet' });
   } catch (err) {
@@ -26,7 +26,7 @@ app.post('/api/auth/register', async (req: Request, res: Response, next: NextFun
   }
 });
 
-app.post('/api/auth/login', async (req: Request, res: Response, next: NextFunction) => {
+app.post('/api/auth/login', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     res.json({ message: 'Login endpoint not implemented yet' });
   } catch (err) {
@@ -38,7 +38,7 @@ app.post('/api/auth/login', async (req: Request, res: Response, next: NextFuncti
 app.use('/api', verifyAuth);
 
 // Periodos routes (stub)
-app.get('/api/periodos', async (req: Request, res: Response, next: NextFunction) => {
+app.get('/api/periodos', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     res.json({ message: 'GET periodos not implemented yet', data: [] });
   } catch (err) {
@@ -46,7 +46,7 @@ app.get('/api/periodos', async (req: Request, res: Response, next: NextFunction)
   }
 });
 
-app.post('/api/periodos', async (req: Request, res: Response, next: NextFunction) => {
+app.post('/api/periodos', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     res.status(201).json({ message: 'POST periodos not implemented yet' });
   } catch (err) {
@@ -55,7 +55,7 @@ app.post('/api/periodos', async (req: Request, res: Response, next: NextFunction
 });
 
 // Movimientos routes (stub)
-app.get('/api/periodos/:periodoId/movimientos', async (req: Request, res: Response, next: NextFunction) => {
+app.get('/api/periodos/:periodoId/movimientos', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     res.json({ message: 'GET movimientos not implemented yet', data: [] });
   } catch (err) {
@@ -64,7 +64,7 @@ app.get('/api/periodos/:periodoId/movimientos', async (req: Request, res: Respon
 });
 
 // 404
-app.use((req: Request, res: Response) => {
+app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: 'not_found', message: 'Endpoint no existe' });
 });
 

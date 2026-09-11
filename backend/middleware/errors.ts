@@ -7,9 +7,9 @@ export interface AppError extends Error {
 
 export function errorHandler(
   err: AppError,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) {
   const statusCode = err.statusCode || 500;
   const errorCode = err.errorCode || 'internal_error';
