@@ -5,7 +5,7 @@ import './LoginPage.css'
 
 export default function LoginPage() {
   const navigate = useNavigate()
-  const { login, error } = useAuthStore()
+  const { login, register, error } = useAuthStore()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -17,10 +17,14 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      await login(email, password)
+      if (isRegister) {
+        await register(email, password)
+      } else {
+        await login(email, password)
+      }
       navigate('/')
     } catch (err) {
-      console.error('Login error:', err)
+      console.error('Auth error:', err)
     } finally {
       setLoading(false)
     }
