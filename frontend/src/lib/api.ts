@@ -181,6 +181,31 @@ class ApiClient {
   async deleteCuenta(id: number) {
     return this.request<any>('DELETE', `/cuentas/${id}`);
   }
+
+  // Presupuestos endpoints
+  async getPresupuestosPeriodo(periodoId: number) {
+    return this.request<{ data: any[] }>('GET', `/presupuestos/periodo/${periodoId}`);
+  }
+
+  async getPresupuesto(id: number) {
+    return this.request<{ presupuesto: any }>('GET', `/presupuestos/${id}`);
+  }
+
+  async createPresupuesto(data: {
+    periodo_id: number;
+    concepto_id: number;
+    monto_presupuestado: number;
+  }) {
+    return this.request<{ presupuesto: any }>('POST', '/presupuestos', data);
+  }
+
+  async updatePresupuesto(id: number, data: Partial<any>) {
+    return this.request<{ presupuesto: any }>('PATCH', `/presupuestos/${id}`, data);
+  }
+
+  async deletePresupuesto(id: number) {
+    return this.request<any>('DELETE', `/presupuestos/${id}`);
+  }
 }
 
 export const apiClient = new ApiClient();
