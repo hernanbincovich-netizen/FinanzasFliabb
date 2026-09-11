@@ -25,7 +25,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       query = query.eq('es_recurrente', recurrente === 'true');
     }
 
-    const { data, error } = await query.order('orden', { ascending: true });
+    const { data, error } = await query.order('id', { ascending: true });
 
     if (error) throw error;
 
