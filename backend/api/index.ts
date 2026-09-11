@@ -1,14 +1,14 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { verifyAuth } from '../middleware/auth.js';
 import { errorHandler } from '../middleware/errors.js';
 import authRouter from './routes/auth.js';
 import periodosRouter from './routes/periodos.js';
 import movimientosRouter from './routes/movimientos.js';
 import conceptosRouter from './routes/conceptos.js';
-
-dotenv.config();
 
 const app = express();
 

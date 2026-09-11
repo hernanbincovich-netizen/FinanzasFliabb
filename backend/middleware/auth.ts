@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 // Extender tipos de Express para agregar usuario autenticado
 declare global {
@@ -13,10 +13,21 @@ declare global {
   }
 }
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
-);
+let supabase: SupabaseClient | null = null;
+
+function getSupabase(): SupabaseClient {
+  if (!supabase) {
+    const url = process.env.SUPABASE_URL;
+    const key = process.env.SUPABASE_ANON_KEY;
+
+    if (!url || !key) {
+      throw new Error('Missing SUPABASE_URL or SUPABASE_ANON_KEY environment variables');
+    }
+
+    supabase = createClient(url, key);
+  }
+  return supabase;
+}
 
 export async function verifyAuth(
   req: Request,
@@ -35,7 +46,7 @@ export async function verifyAuth(
     }
 
     // Verificar token con Supabase
-    const { data, error } = await supabase.auth.getUser(token);
+    const { data, error } = await getSupabase().auth.getUser(token);
 
     if (error || !data.user) {
       res.status(401).json({

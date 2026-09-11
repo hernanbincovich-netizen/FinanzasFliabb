@@ -51,7 +51,7 @@ class ApiClient {
 
   // Auth endpoints
   async register(email: string, password: string): Promise<any> {
-    const response = (await this.request<any>('/auth/register', 'POST', { email, password })) as any;
+    const response = (await this.request<any>('POST', '/auth/register', { email, password })) as any;
     if (response?.session?.access_token) {
       this.setToken(response.session.access_token);
     }
@@ -59,7 +59,7 @@ class ApiClient {
   }
 
   async login(email: string, password: string): Promise<any> {
-    const response = (await this.request<any>('/auth/login', 'POST', { email, password })) as any;
+    const response = (await this.request<any>('POST', '/auth/login', { email, password })) as any;
     if (response?.session?.access_token) {
       this.setToken(response.session.access_token);
     }
@@ -67,7 +67,7 @@ class ApiClient {
   }
 
   async refresh(refreshToken: string): Promise<any> {
-    const response = (await this.request<any>('/auth/refresh', 'POST', { refresh_token: refreshToken })) as any;
+    const response = (await this.request<any>('POST', '/auth/refresh', { refresh_token: refreshToken })) as any;
     if (response?.access_token) {
       this.setToken(response.access_token);
     }
@@ -76,28 +76,28 @@ class ApiClient {
 
   // Periodos endpoints
   async getPeriodos() {
-    return this.request<{ data: any[] }>('/periodos', 'GET');
+    return this.request<{ data: any[] }>('GET', '/periodos');
   }
 
   async getPeriodo(id: number) {
-    return this.request<{ periodo: any }>(`/periodos/${id}`, 'GET');
+    return this.request<{ periodo: any }>('GET', `/periodos/${id}`);
   }
 
   async createPeriodo(anio: number, mes: number) {
-    return this.request<{ periodo: any }>('/periodos', 'POST', { anio, mes });
+    return this.request<{ periodo: any }>('POST', '/periodos', { anio, mes });
   }
 
   async cerrarPeriodo(id: number) {
-    return this.request<any>(`/periodos/${id}/cerrar`, 'POST');
+    return this.request<any>('POST', `/periodos/${id}/cerrar`);
   }
 
   async reabrirPeriodo(id: number) {
-    return this.request<any>(`/periodos/${id}/reabrir`, 'POST');
+    return this.request<any>('POST', `/periodos/${id}/reabrir`);
   }
 
   // Movimientos endpoints
   async getMovimientos(periodoId: number) {
-    return this.request<{ data: any[] }>(`/periodos/${periodoId}/movimientos`, 'GET');
+    return this.request<{ data: any[] }>('GET', `/periodos/${periodoId}/movimientos`);
   }
 
   async createMovimiento(periodoId: number, data: {
@@ -109,20 +109,20 @@ class ApiClient {
     fecha_vencimiento?: string;
     nota?: string;
   }) {
-    return this.request<{ movimiento: any }>(`/periodos/${periodoId}/movimientos`, 'POST', data);
+    return this.request<{ movimiento: any }>('POST', `/periodos/${periodoId}/movimientos`, data);
   }
 
   async updateMovimiento(id: number, data: Partial<any>) {
-    return this.request<{ movimiento: any }>(`/movimientos/${id}`, 'PATCH', data);
+    return this.request<{ movimiento: any }>('PATCH', `/movimientos/${id}`, data);
   }
 
   async toggleEstadoMovimiento(id: number) {
-    return this.request<{ movimiento: any }>(`/movimientos/${id}/estado`, 'PATCH');
+    return this.request<{ movimiento: any }>('PATCH', `/movimientos/${id}/estado`);
   }
 
   async deleteMovimiento(id: number, borrarConcepto?: boolean) {
     const path = `/movimientos/${id}${borrarConcepto ? '?borrar_concepto=true' : ''}`;
-    return this.request<any>(path, 'DELETE');
+    return this.request<any>('DELETE', path);
   }
 
   // Conceptos endpoints
@@ -132,7 +132,7 @@ class ApiClient {
     if (tipo) params.append('tipo', tipo);
     if (recurrente !== undefined) params.append('recurrente', String(recurrente));
     if (params.size > 0) path += `?${params.toString()}`;
-    return this.request<{ data: any[] }>(path, 'GET');
+    return this.request<{ data: any[] }>('GET', path);
   }
 
   async createConcepto(data: {
@@ -145,15 +145,15 @@ class ApiClient {
     es_recurrente?: boolean;
     monto_referencia?: number;
   }) {
-    return this.request<{ concepto: any }>('/conceptos', 'POST', data);
+    return this.request<{ concepto: any }>('POST', '/conceptos', data);
   }
 
   async updateConcepto(id: number, data: Partial<any>) {
-    return this.request<{ concepto: any }>(`/conceptos/${id}`, 'PATCH', data);
+    return this.request<{ concepto: any }>('PATCH', `/conceptos/${id}`, data);
   }
 
   async deleteConcepto(id: number) {
-    return this.request<any>(`/conceptos/${id}`, 'DELETE');
+    return this.request<any>('DELETE', `/conceptos/${id}`);
   }
 }
 
