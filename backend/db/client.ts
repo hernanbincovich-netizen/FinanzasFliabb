@@ -32,13 +32,13 @@ export function getSupabaseAnon(): SupabaseClient | null {
 }
 
 export const supabaseAdmin = new Proxy({} as SupabaseClient, {
-  get: (target, prop) => {
+  get: (_target, prop) => {
     return (getSupabaseAdmin() as any)[prop];
   },
 });
 
-export const supabaseAnon = new Proxy({} as SupabaseClient | null, {
-  get: (target, prop) => {
+export const supabaseAnon = new Proxy({} as any, {
+  get: (_target, prop) => {
     const anon = getSupabaseAnon();
     return anon ? (anon as any)[prop] : undefined;
   },
