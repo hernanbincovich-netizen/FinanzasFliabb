@@ -233,6 +233,37 @@ class ApiClient {
   async deleteMeta(id: number) {
     return this.request<any>('DELETE', `/metas/${id}`);
   }
+
+  // Cotizaciones endpoints
+  async getCotizaciones() {
+    return this.request<{ data: any[] }>('GET', '/cotizaciones');
+  }
+
+  async getCotizacionesVigentes() {
+    return this.request<{ data: any[] }>('GET', '/cotizaciones/vigentes/actuales');
+  }
+
+  async getCotizacion(id: number) {
+    return this.request<{ cotizacion: any }>('GET', `/cotizaciones/${id}`);
+  }
+
+  async createCotizacion(data: {
+    moneda_origen: string;
+    moneda_destino: string;
+    tasa_cambio: number;
+    fecha_vigencia?: string;
+    es_vigente?: boolean;
+  }) {
+    return this.request<{ cotizacion: any }>('POST', '/cotizaciones', data);
+  }
+
+  async updateCotizacion(id: number, data: Partial<any>) {
+    return this.request<{ cotizacion: any }>('PATCH', `/cotizaciones/${id}`, data);
+  }
+
+  async deleteCotizacion(id: number) {
+    return this.request<any>('DELETE', `/cotizaciones/${id}`);
+  }
 }
 
 export const apiClient = new ApiClient();

@@ -7,6 +7,7 @@ import DashboardPage from './pages/DashboardPage'
 import CuentasPage from './pages/CuentasPage'
 import PresupuestosPage from './pages/PresupuestosPage'
 import MetasPage from './pages/MetasPage'
+import CotizacionesPage from './pages/CotizacionesPage'
 import './App.css'
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/cuentas" element={<CuentasPage />} />
             <Route path="/presupuestos" element={<PresupuestosPage />} />
             <Route path="/metas" element={<MetasPage />} />
+            <Route path="/cotizaciones" element={<CotizacionesPage />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </>
         ) : (

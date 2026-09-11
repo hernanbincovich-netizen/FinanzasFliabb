@@ -12,6 +12,7 @@ import conceptosRouter from './routes/conceptos.js';
 import cuentasRouter from './routes/cuentas.js';
 import presupuestosRouter from './routes/presupuestos.js';
 import metasRouter from './routes/metas.js';
+import cotizacionesRouter from './routes/cotizaciones.js';
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use('/api/conceptos', conceptosRouter);
 app.use('/api/cuentas', cuentasRouter);
 app.use('/api/presupuestos', presupuestosRouter);
 app.use('/api/metas', metasRouter);
+app.use('/api/cotizaciones', cotizacionesRouter);
 
 // 404
 app.use((_req: Request, res: Response) => {
