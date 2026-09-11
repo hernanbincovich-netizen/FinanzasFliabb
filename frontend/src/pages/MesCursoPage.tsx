@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
 import { useDataStore } from '../stores/dataStore'
 import { apiClient } from '../lib/api'
@@ -8,9 +9,15 @@ import MovimientoModal, { MovimientoFormData } from '../components/MovimientoMod
 import './MesCursoPage.css'
 
 export default function MesCursoPage() {
+  const navigate = useNavigate()
   const { user, logout } = useAuthStore()
   const { periodos, periodoActual, movimientos, fetchPeriodos, setPeriodoActual, movimientosLoading } =
     useDataStore()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
 
   const [cerrando, setCerrando] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
@@ -245,7 +252,17 @@ export default function MesCursoPage() {
   return (
     <div className="app-container">
       <div className="topbar">
-        <h1>Mes en Curso</h1>
+        <div className="topbar-left">
+          <h1>Mes en Curso</h1>
+          <nav className="topbar-nav">
+            <button onClick={() => navigate('/dashboard')} className="nav-btn">
+              Dashboard
+            </button>
+            <button onClick={() => navigate('/mes-en-curso')} className="nav-btn active">
+              Mes en Curso
+            </button>
+          </nav>
+        </div>
         <div className="periodo-selector">
           <button onClick={goToPreviousMes}>&lsaquo;</button>
           <span className="periodo-label">{formatearMesAnio(periodoActual)}</span>
@@ -253,7 +270,7 @@ export default function MesCursoPage() {
         </div>
         <div className="user-menu">
           <span>{user?.email}</span>
-          <button onClick={logout} className="logout-btn">
+          <button onClick={handleLogout} className="logout-btn">
             Salir
           </button>
         </div>

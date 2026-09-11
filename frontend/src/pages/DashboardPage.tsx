@@ -1,14 +1,21 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
 import { useDataStore } from '../stores/dataStore'
 import './DashboardPage.css'
 
 export default function DashboardPage() {
+  const navigate = useNavigate()
   const { user, logout } = useAuthStore()
   const { periodos } = useDataStore()
   const [totalIngresos, setTotalIngresos] = useState(0)
   const [totalGastos, setTotalGastos] = useState(0)
   const [totalAhorro, setTotalAhorro] = useState(0)
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
 
   useEffect(() => {
     // Calcular totales de todos los períodos
@@ -26,10 +33,20 @@ export default function DashboardPage() {
   return (
     <div className="app-container">
       <div className="topbar">
-        <h1>Dashboard</h1>
+        <div className="topbar-left">
+          <h1>Dashboard</h1>
+          <nav className="topbar-nav">
+            <button onClick={() => navigate('/dashboard')} className="nav-btn active">
+              Dashboard
+            </button>
+            <button onClick={() => navigate('/mes-en-curso')} className="nav-btn">
+              Mes en Curso
+            </button>
+          </nav>
+        </div>
         <div className="user-menu">
           <span>{user?.email}</span>
-          <button onClick={logout} className="logout-btn">
+          <button onClick={handleLogout} className="logout-btn">
             Salir
           </button>
         </div>
