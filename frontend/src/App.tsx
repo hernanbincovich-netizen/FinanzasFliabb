@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuthStore } from './stores/authStore'
 import LoginPage from './pages/LoginPage'
 import MesCursoPage from './pages/MesCursoPage'
+import DashboardPage from './pages/DashboardPage'
 import './App.css'
 
 function App() {
@@ -22,8 +23,9 @@ function App() {
       <Routes>
         {isAuthenticated ? (
           <>
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/mes-en-curso" element={<MesCursoPage />} />
-            <Route path="/" element={<Navigate to="/mes-en-curso" replace />} />
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </>
         ) : (
           <>
