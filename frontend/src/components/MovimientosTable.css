@@ -1,0 +1,126 @@
+.movimientos-table-container {
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+}
+
+.movimientos-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.movimientos-table thead {
+  background-color: var(--color-border);
+  font-weight: 600;
+}
+
+.movimientos-table th {
+  padding: 1rem;
+  text-align: left;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+.movimientos-table tbody tr {
+  border-top: 1px solid var(--color-border);
+  transition: background-color 0.2s;
+}
+
+.movimientos-table tbody tr:hover {
+  background-color: var(--color-border);
+}
+
+.movimientos-table td {
+  padding: 1rem;
+  color: var(--color-text);
+}
+
+.concepto-cell {
+  font-weight: 500;
+}
+
+.concepto-name {
+  margin-bottom: 0.25rem;
+}
+
+.concepto-nota {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.monto-cell {
+  font-weight: 600;
+  text-align: right;
+  font-family: 'Courier New', monospace;
+}
+
+.fecha-cell {
+  text-align: center;
+}
+
+.categoria-badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.actions-cell {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.375rem;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-sm:hover {
+  background-color: var(--color-border);
+}
+
+.btn-edit {
+}
+
+.btn-delete {
+  color: #ef4444;
+}
+
+.btn-delete:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.movimientos-table-loading,
+.movimientos-table-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background-color: var(--color-bg);
+}
+
+@media (max-width: 768px) {
+  .movimientos-table {
+    font-size: 0.75rem;
+  }
+
+  .movimientos-table th,
+  .movimientos-table td {
+    padding: 0.75rem 0.5rem;
+  }
+}

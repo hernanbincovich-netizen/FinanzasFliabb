@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from './stores/authStore'
 import LoginPage from './pages/LoginPage'
@@ -5,7 +6,12 @@ import MesCursoPage from './pages/MesCursoPage'
 import './App.css'
 
 function App() {
-  const { isAuthenticated, loading } = useAuthStore()
+  const { isAuthenticated, loading, checkAuth } = useAuthStore()
+
+  // Verificar autenticación al montar
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   if (loading) {
     return <div className="loading">Cargando...</div>

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { supabaseClient } from '../lib/supabase'
+import { apiClient } from '../lib/api'
 
 interface User {
   id: string
@@ -13,8 +13,8 @@ interface AuthState {
   error: string | null
   login: (email: string, password: string) => Promise<void>
   register: (email: string, password: string) => Promise<void>
-  logout: () => Promise<void>
-  checkAuth: () => Promise<void>
+  logout: () => void
+  checkAuth: () => void
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -27,18 +27,13 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       set({ error: null, loading: true })
 
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password,
-      })
+      const response = (await apiClient.login(email, password)) as any
 
-      if (error) throw error
-
-      if (data.user) {
+      if (response?.user) {
         set({
           user: {
-            id: data.user.id,
-            email: data.user.email || '',
+            id: response.user.id,
+            email: response.user.email,
           },
           isAuthenticated: true,
         })
@@ -56,18 +51,13 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       set({ error: null, loading: true })
 
-      const { data, error } = await supabaseClient.auth.signUp({
-        email,
-        password,
-      })
+      const response = (await apiClient.register(email, password)) as any
 
-      if (error) throw error
-
-      if (data.user) {
+      if (response?.user) {
         set({
           user: {
-            id: data.user.id,
-            email: data.user.email || '',
+            id: response.user.id,
+            email: response.user.email,
           },
           isAuthenticated: true,
         })
@@ -81,44 +71,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  logout: async () => {
-    try {
-      set({ error: null, loading: true })
-      await supabaseClient.auth.signOut()
-      set({ user: null, isAuthenticated: false })
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Error en logout'
-      set({ error: message })
-      throw err
-    } finally {
-      set({ loading: false })
-    }
+  logout: () => {
+    apiClient.setToken(null)
+    set({ user: null, isAuthenticated: false, error: null })
   },
 
-  checkAuth: async () => {
-    try {
-      set({ loading: true })
-
-      const { data, error } = await supabaseClient.auth.getSession()
-
-      if (error) throw error
-
-      if (data.session?.user) {
-        set({
-          user: {
-            id: data.session.user.id,
-            email: data.session.user.email || '',
-          },
-          isAuthenticated: true,
-        })
-      } else {
-        set({ user: null, isAuthenticated: false })
-      }
-    } catch (err) {
-      console.error('Auth check error:', err)
-      set({ user: null, isAuthenticated: false })
-    } finally {
-      set({ loading: false })
+  checkAuth: () => {
+    // Verificar si hay token guardado
+    const token = apiClient.getToken()
+    if (token) {
+      // Para una verificación completa, hacer request a un endpoint protegido
+      // Por ahora, asumir que si hay token, está autenticado
+      set({ isAuthenticated: true })
+    } else {
+      set({ isAuthenticated: false })
     }
+    set({ loading: false })
   },
 }))
