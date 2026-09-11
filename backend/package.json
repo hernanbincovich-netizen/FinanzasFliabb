@@ -10,7 +10,8 @@
     "test": "vitest",
     "test:integration": "vitest run tests/integration",
     "test:unit": "vitest run tests/unit",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed": "tsx ../scripts/seed-test-data.ts"
   },
   "keywords": [],
   "author": "Hernan Bincovich",
