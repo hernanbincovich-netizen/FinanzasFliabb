@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Finanzas del Hogar</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main id="app"></main>
+
+  <!-- Cliente HTTP para API REST (reemplaza SQLite local) -->
+  <script src="js/api-client.js"></script>
+
+  <!-- motor SQLite (LEGACY - solo para compatibilidad de lectura) -->
+  <!-- <script src="vendor/sql-wasm.js"></script>
+  <script src="vendor/sql-wasm-base64.js"></script> -->
+
+  <!-- app core -->
+  <script src="js/format.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/queries.js"></script>
+  <script src="js/calcs.js"></script>
+
+  <!-- Screens -->
+  <script src="js/screens/login.js"></script>
+  <script src="js/screens/dashboard.js"></script>
+  <script src="js/screens/carga.js"></script>
+  <script src="js/screens/presupuesto.js"></script>
+  <script src="js/screens/cuentas.js"></script>
+  <script src="js/screens/cotizaciones.js"></script>
+  <script src="js/screens/metas.js"></script>
+  <script src="js/screens/mescurso.js"></script>
+
+  <!-- Legacy (comentados por ahora) -->
+  <!-- <script src="js/schema.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/seed.js"></script> -->
+<!--  <script src="js/calc.js"></script>
+  <script src="js/acciones.js"></script> -->
+
+  <!-- Main app logic -->
+  <script src="js/main.js"></script>
+</body>
+</html>
