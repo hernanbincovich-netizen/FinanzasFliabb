@@ -155,6 +155,32 @@ class ApiClient {
   async deleteConcepto(id: number) {
     return this.request<any>('DELETE', `/conceptos/${id}`);
   }
+
+  // Cuentas endpoints
+  async getCuentas() {
+    return this.request<{ data: any[] }>('GET', '/cuentas');
+  }
+
+  async getCuenta(id: number) {
+    return this.request<{ cuenta: any }>('GET', `/cuentas/${id}`);
+  }
+
+  async createCuenta(data: {
+    nombre: string;
+    tipo?: string;
+    moneda?: string;
+    saldo_inicial?: number;
+  }) {
+    return this.request<{ cuenta: any }>('POST', '/cuentas', data);
+  }
+
+  async updateCuenta(id: number, data: Partial<any>) {
+    return this.request<{ cuenta: any }>('PATCH', `/cuentas/${id}`, data);
+  }
+
+  async deleteCuenta(id: number) {
+    return this.request<any>('DELETE', `/cuentas/${id}`);
+  }
 }
 
 export const apiClient = new ApiClient();

@@ -4,6 +4,7 @@ import { useAuthStore } from './stores/authStore'
 import LoginPage from './pages/LoginPage'
 import MesCursoPage from './pages/MesCursoPage'
 import DashboardPage from './pages/DashboardPage'
+import CuentasPage from './pages/CuentasPage'
 import './App.css'
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/mes-en-curso" element={<MesCursoPage />} />
+            <Route path="/cuentas" element={<CuentasPage />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </>
         ) : (

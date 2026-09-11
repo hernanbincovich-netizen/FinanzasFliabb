@@ -9,6 +9,7 @@ import authRouter from './routes/auth.js';
 import periodosRouter from './routes/periodos.js';
 import movimientosRouter from './routes/movimientos.js';
 import conceptosRouter from './routes/conceptos.js';
+import cuentasRouter from './routes/cuentas.js';
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/api', verifyAuth);
 app.use('/api/periodos', periodosRouter);
 app.use('/api/movimientos', movimientosRouter);
 app.use('/api/conceptos', conceptosRouter);
+app.use('/api/cuentas', cuentasRouter);
 
 // 404
 app.use((_req: Request, res: Response) => {
