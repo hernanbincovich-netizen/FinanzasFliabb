@@ -97,7 +97,7 @@ class ApiClient {
 
   // Movimientos endpoints
   async getMovimientos(periodoId: number) {
-    return this.request<{ data: any[] }>('GET', `/periodos/${periodoId}/movimientos`);
+    return this.request<{ data: any[] }>('GET', `/movimientos/${periodoId}`);
   }
 
   async createMovimiento(periodoId: number, data: {
@@ -109,7 +109,7 @@ class ApiClient {
     fecha_vencimiento?: string;
     nota?: string;
   }) {
-    return this.request<{ movimiento: any }>('POST', `/periodos/${periodoId}/movimientos`, data);
+    return this.request<{ movimiento: any }>('POST', `/movimientos/${periodoId}`, data);
   }
 
   async updateMovimiento(id: number, data: Partial<any>) {

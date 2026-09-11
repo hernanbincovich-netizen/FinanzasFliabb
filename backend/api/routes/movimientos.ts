@@ -8,7 +8,7 @@ const router = Router();
  * GET /api/periodos/:periodoId/movimientos
  * Listar movimientos de un período
  */
-router.get('/periodos/:periodoId/movimientos', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:periodoId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { periodoId } = req.params;
 
@@ -51,7 +51,7 @@ router.get('/periodos/:periodoId/movimientos', async (req: Request, res: Respons
  * POST /api/periodos/:periodoId/movimientos
  * Crear movimiento en un período
  */
-router.post('/periodos/:periodoId/movimientos', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:periodoId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { periodoId } = req.params;
     const { concepto_id, monto, moneda, cuenta_id, estado, fecha_vencimiento, nota } = req.body;

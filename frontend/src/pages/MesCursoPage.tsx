@@ -26,7 +26,7 @@ export default function MesCursoPage() {
   useEffect(() => {
     fetchPeriodos()
     loadConceptos()
-  }, [fetchPeriodos])
+  }, [])
 
   // Cargar conceptos
   const loadConceptos = async () => {
