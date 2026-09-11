@@ -4,6 +4,13 @@
   App.screens.dashboard = async function () {
     const p = await App.periodoView();
     const wrap = U.el('section', 'screen');
+
+    if (!p) {
+      wrap.append(U.head('Dashboard', 'Tu resumen financiero'));
+      wrap.append(U.card('Sin períodos', 'No hay períodos creados aún. Crea el primero para ver tu dashboard.'));
+      return wrap;
+    }
+
     wrap.append(U.head('Dashboard',
       `Cómo viene ${F.periodoLargo(p)} y cómo evoluciona el ahorro del hogar. Montos en pesos, con las cotizaciones vigentes.`));
 

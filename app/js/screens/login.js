@@ -9,8 +9,8 @@
 
     const card = U.card('Login');
     const form = U.form([
-      { k: 'email', label: 'Email', placeholder: 'hernan@finanzas.local', type: 'email' },
-      { k: 'password', label: 'Contraseña', type: 'password', placeholder: '••••••' }
+      { k: 'email', label: 'Email', value: 'hernan@finanzas.local', type: 'email' },
+      { k: 'password', label: 'Contraseña', type: 'password', value: 'Hernan123!' }
     ]);
 
     const btnLogin = U.el('button', 'btn', 'Ingresar');
