@@ -40,3 +40,6 @@ npm-debug.log*
 .cache/
 temp/
 .turbo/
+
+.vercel
+.env*
